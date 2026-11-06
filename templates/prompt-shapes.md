@@ -1,46 +1,46 @@
-# Optional prompt shapes
+# Prompt shapes
 
-Use only the slots needed for the task. Fill recoverable facts from authoritative material instead of asking the user to supply them again. These shapes do not override the receiving platform's roles or tool contract.
+Adapt these outlines to the task. Fill in facts from the available material and choose the detail needed for the receiving model.
 
 ## Tool-using agent
 
 ```text
-Goal: <the behavior or artifact wanted, and why if relevant>.
-Starting evidence: <primary input, observed symptom, source or entry point>.
-Preserve: <existing behavior, exact contracts and resource boundaries>.
-Done means: <observable result or artifact-level acceptance>.
-Provide: <the evidence needed to accept the result, not a process diary>.
-Choose the implementation within these boundaries. Ask only for unresolved
-user-owned decisions that materially change the outcome, scope or cost.
+Goal: <the result wanted and its purpose>.
+Context: <primary input, observed behavior, relevant sources or entry point>.
+Requirements: <what matters, including behavior to preserve and resource limits>.
+Done means: <a useful result and how to recognize it>.
+Deliver: <the artifact and evidence needed to review it>.
+Choose an effective approach. Use the available tools and feedback to work
+through the task; ask about user-owned decisions that materially change it.
 ```
 
-A clear small request can be one sentence. The template is not a demand to make every user prompt longer.
+For a clear small task, a direct sentence may carry everything needed.
 
 ## Single-shot generator
 
 ```text
 Create <artifact> for <purpose>.
-Use these authoritative facts: <facts, with unknowns kept explicit>.
-Available choices and their meanings: <capabilities, units and dependencies>.
+Facts and context: <relevant supplied material>.
+Available capabilities: <operations, meanings and dependencies>.
 Return <output contract>.
-A good result <quality criteria and allowed creative freedom>.
+Aim for <quality criteria>, using <the creative freedom relevant to the task>.
 ```
 
-Do not ask a one-shot generator to inspect unavailable files, execute tests or certify runtime behavior. If explanations are useful downstream, request them for that purpose rather than treating a self-evaluation as proof.
+Supply the context the generator needs to answer. Request explanations when they help a person or downstream stage use the result; use the consuming system to check executable behavior.
 
-## Repair an existing prompt
+## Improve an existing prompt
 
 ```text
-Improve <the actual instruction surface> for <observed failure>.
-Evidence: <failed example, relevant success/control, effective request>.
-Preserve <capabilities, facts, contracts and permissions>.
-Determine whether the defect belongs to wording, input data, a conflicting
-instruction, an interface/capability, or evaluation. Change the owning
-mechanism within scope; do not just add a warning for the example.
-Deliver the revised prompt and the evidence available for the claimed change.
-<Explicit model-run budget and route, only if a live comparison is authorized.>
+Improve <instruction or skill> for <goal or observed problem>.
+Context: <current prompt, representative outputs and relevant consumers>.
+Keep <actual requirements>; reconsider <the part we want to improve>.
+Find what helps or obstructs the goal, including the effect of the combined
+instructions. Fix the cause, changing the wording or structure as needed.
+Deliver a usable revision and check it with evidence appropriate to the task.
 ```
 
-## A reusable skill entry
+Add particular model, budget or output requirements when they matter to this job.
 
-Describe a narrow trigger, what knowledge or procedure the skill contributes, critical invariants and routes to optional depth. Put task history, benchmark receipts and long special cases outside the root. Retain enough actual guidance to choose and perform the ordinary case; do not reduce the skill to an unexplained link index.
+## Reusable skill
+
+Give the skill a clear trigger, useful knowledge, the decisions it helps with and routes to specialized material. Keep the main workflow understandable on its own. Put detailed procedures, examples and templates where the agent can load them for the relevant task.

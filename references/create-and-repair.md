@@ -1,74 +1,105 @@
-# Creating and repairing prompts
+# Creating, auditing and improving prompts
 
-Use the parts that fit the actual failure or task. The sequence below expresses dependencies, not a requirement to produce a report at every step.
+## Create: understand the job
 
-## Create: start with the job
+Identify what the model should achieve, who will use the result and what the execution environment provides. A tool-using agent can inspect and act; a single-shot generator works from the context supplied to it. In a pipeline, give each stage clear inputs, decisions and outputs.
 
-Identify what the receiving model must produce and what it can actually do. A tool-using agent, fixed multi-stage pipeline and one-shot generator have different means of satisfying a request. Give each stage its own inputs, decisions and output contract; do not let a stage promise work owned elsewhere.
+Build the prompt from the information that matters:
 
-Write a compact brief containing what the task needs:
+- **Goal:** the behavior or artifact wanted and the purpose behind it.
+- **Context:** primary material, relevant background, available tools and capabilities.
+- **Requirements:** output shape, important semantics, units, dependencies and user constraints.
+- **Quality:** what makes the result useful, accurate or well designed for this task.
+- **Judgment:** choices the model can make and decisions that need the user's preference.
 
-- **Goal and purpose:** the behavior or artifact wanted and the reason relevant trade-offs matter.
-- **Primary material:** authoritative inputs, evidence and tool access; mark observations, assumptions and unknowns separately.
-- **Contract:** required output, valid operations, units, relevant bounds, permissions and preserved behavior.
-- **Acceptance:** an observable result, or a human-quality rubric when no deterministic oracle exists.
-- **Autonomy boundary:** what can be chosen independently and which unresolved decisions truly need the user.
+Recover facts from the available material. Ask about a missing preference when it materially changes the result. For a noisy or ambiguous request, briefly state your understanding so a misunderstanding is easy to correct; continue clear work using the context already available.
 
-Do not make the user fill a form when the repository or supplied material already answers it. Ask when the missing decision changes scope, cost, irreversible effects or the desired product. When a noisy request is easy to misunderstand, a brief readback can expose assumptions; it is not a mandatory approval stop for clear routine work.
+For exploratory work, describe the question and useful evidence the model should seek. Let it refine an approach as it learns. Use the [prompt shapes](../templates/prompt-shapes.md) when a starting outline helps.
 
-The optional [prompt shapes](../templates/prompt-shapes.md) are starting points, not compulsory headings.
+## Give the model useful context
 
-## Supply knowledge, not a performance of reasoning
+Describe capabilities in terms the receiving model can use: what an operation does, what its parameters mean, and which dependencies affect a valid choice. Put coupled field requirements near the relevant fields. Keep the schema and prose consistent with the consumer.
 
-Describe real operations at their source of authority. A useful capability card says what the operation does, its inputs/units, relevant conditions and its effects. Put a cross-field dependency where a reader can discover it while making that choice. Optional individual fields may still participate in an obligatory alternative; explain the alternative rather than prescribing one arbitrary option.
+Separate facts about existing material from choices about a new artifact. A model can faithfully use supplied facts while inventing a new design, explanation or composition. Say which freedoms serve the task.
 
-For an existing parent, document supplied facts faithfully. For a newly authored object, explain the available creative space. Do not allow a broad 'use only source-backed facts' sentence to turn all invention into prohibited behavior.
+Use examples to show quality, format, style or subtle semantics. A worked example can communicate more than a page of rules. Where several designs are acceptable, show or describe that range so the model understands which parts of the example matter.
 
-Use schema or typed validation for shape and enforceable invariants. Use prose for purpose, meaningful choices and semantics the schema cannot express. Avoid maintaining contradictory copies of the same contract. A validator rejecting an answer does not prove that the model was told a usable contract.
+Choose the amount of detail for the model and task. Concrete steps help with fragile tool sequences or domain procedures; a clear goal and context often suffice for familiar work. Revisit old scaffolding when the model, tools or task changes.
 
-Examples should clarify an actual ambiguity: units, syntax, scope or a difficult boundary. Use diverse minimal examples when one would anchor every answer to the same design. Do not replace domain knowledge with a list of imagined failure warnings.
+## Audit: read the instructions as the receiving model
 
-## Repair: classify the evidence before editing
+For an application, inspect the effective messages, supplied context and output format. For a reusable skill, include the references and examples its trigger leads the model to read.
 
-Obtain a representative failure and, where relevant, a successful control. Inspect the actual messages and effective output format at the sender boundary, not just a source template. Read additional stages only when they participate in the suspected mechanism.
+Ask what behavior the complete instruction set encourages:
 
-| Observation | Appropriate owner or response |
+- Is the intended result clear enough to guide decisions?
+- Can the model discover the facts and capabilities it needs?
+- Which choices are genuinely constrained, and which remain open?
+- Do global rules conflict with local instructions or examples?
+- Is there an easy compliant answer that misses the user's goal?
+- Does the prompt reward useful work, or time spent proving compliance?
+
+Follow the instruction and data flow far enough to understand the cause. Compare an actual weak result with a successful example when available. Also review prompts that already work when the goal is clearer wording, a different style, better quality or a more capable workflow.
+
+## Locate the cause
+
+| Observation | Useful response |
 |---|---|
-| A necessary fact never reaches the model | Fix retrieval, projection or stage input; a reminder cannot recover absent data. |
-| The instruction disagrees with the consumer | Correct the canonical contract and its projections; do not invent a workaround in another stage. |
-| Two instructions pull in different directions | Resolve authority and remove the conflict at its owner. Check higher-priority/global text as well as the local sentence. |
-| Repeated global rules discourage useful choices | Explain the intended trade-off, preserve the real boundary, and remove cumulative pressure toward an easy but unhelpful answer. |
-| The requested operation is unavailable | Expose the actual capability gap; implement it only within scope or revise the task with the user. |
-| The answer violates an adequate contract once | Record a model error; do not automatically add another duplicate prohibition. |
-| The output is valid but unhelpful | Improve the objective or acceptance criteria; inspect product quality rather than polishing the self-report. |
-| The model spends time on irrelevant ceremony | Narrow the trigger or condition; remove the obligation if it does not affect the requested outcome. |
+| Necessary context is missing | Improve retrieval, projection or the stage input. |
+| The instruction disagrees with the consumer | Reconcile the contract at its owner and update affected projections. |
+| Instructions conflict | Resolve their authority and remove the conflicting requirement. |
+| The model chooses a technically valid but weak answer | Clarify the purpose, quality criteria and available design space. |
+| The model performs irrelevant steps | Remove or narrow the obligation that triggers them. |
+| A needed operation is unavailable | Find another effective approach or extend the capability within the task's scope. |
+| A failure occurs despite apparently clear instructions | Inspect the example, model settings, tools and surrounding context before choosing a remedy. |
+| The same error keeps recurring | Consider a better interface, data structure, diagnostic or automated check alongside prompt changes. |
 
-Distinguish a diagnosed instruction defect from a hypothesis about model behavior. Another reader understanding the text is useful evidence, not proof that the original wrong answer is acceptable or that all models will understand it.
+Choose the remedy from the evidence. A prompt rewrite, an input fix and an interface improvement solve different problems.
 
-## Make the smallest coherent repair
+## Improve at the right scope
 
-Change the instruction that owns the problem and its active duplicated projections. Preserve exact identifiers, units, permissions, valid alternatives and expressive capacity. Where separate task branches need different guidance, route to the right branch instead of accumulating exceptions in the root.
+Fix a local ambiguity locally. Rewrite the structure when accumulated rules obscure the goal or restrict useful solutions. Remove obsolete requirements and combine duplicated ones; keep the domain knowledge and choices the task still needs.
 
-When an error recurs, prefer a better interface, type, diagnostic or automatic check when it can eliminate the mechanism. Do not remove still-useful explanatory prose merely because an invariant is enforced. Avoid writing a new 'never do X' rule for every historical incident.
+Identify what must remain stable and what the user wants changed. For behavior-preserving edits, retain the supported operations, units and meaningful conditions. For a contract redesign, change the prompt, validation and consumers together so the new design is coherent.
 
-### Illustrative transformations
+Give each durable rule a clear owner. Shared facts belong where their users can discover them; branch-specific detail belongs with that branch. Keep useful examples and explanations even when some invariants are enforced by code.
 
-These are invented examples, not measured before/after results or required production text.
+Write instructions and documentation directly. Explain an actual limitation where it affects a decision; use the rest of the space to help the reader do the work.
 
-**Procedure-heavy:** 'Always inspect every module, propose three options, run all tests and obtain an independent review.'
+## Examples
 
-**Outcome-oriented:** 'Fix the duplicate record on retry while preserving ordinary delivery. Use the relevant producer and persistence boundary to demonstrate that the same logical operation creates one record. Broaden verification if the change crosses another contract.'
+### Replace a fixed itinerary with an outcome
 
-**Over-restrictive generation:** 'Never invent anything absent from the source items; always produce the simplest design.'
+Before:
 
-**Separated authority:** 'Treat supplied source-item properties as facts. Compose a new useful design from supported operations; source facts do not require copying either parent's mechanics. Choose complexity that serves the goal, and accurately describe the behavior you author.'
+> Always inspect every module, propose three options, run all tests and obtain an independent review.
 
-**Vague compression:** 'Make the prompt as short as possible.'
+After:
 
-**Preserving meaning:** 'Remove repetition and irrelevant instructions while preserving every supported operation, necessary parameter, unit, condition and valid composition. Report size and behavioral evidence separately.'
+> Fix the duplicate record on retry while preserving ordinary delivery. Demonstrate that repeating the same logical operation creates one record. Choose the investigation and checks that cover the affected behavior.
 
-## Check only the claim you need
+### Open the creative space
 
-For prose-only work, compare the old and new meaning and the affected rendered/serialized surface. A structural check establishes syntax or contract preservation, not improved quality. Replay can establish compatibility of saved examples, not fresh model understanding.
+Before:
 
-If the remaining question is behavioral and a run is authorized, use the matched-task protocol in [Evaluation and metrics](evaluation.md). Preserve the original failure and unknowns. Stop when the defect is repaired and the requested claim has adequate support; do not keep simplifying clear text to reach a size target.
+> Never invent anything absent from the source items; always produce the simplest design.
+
+After:
+
+> Use the supplied item properties as facts. Create a useful new design from the available mechanics, drawing on both source identities. Choose the complexity that serves the result and describe what the design does.
+
+### Give a compression request a meaningful target
+
+Before:
+
+> Make the prompt as short as possible.
+
+After:
+
+> Make the prompt easier to understand and use. Remove repetition and irrelevant guidance while retaining the capabilities, meanings and choices needed for the task.
+
+## Check the result
+
+Inspect the changed prompt as it will be received. Check meaning, examples, output shape and any affected consumers. For a behavioral question, try representative tasks and compare their results using [Evaluation and metrics](evaluation.md).
+
+Keep the comparison tied to the change you made. If a result exposes another cause, follow that evidence and improve the solution. Finish with a usable prompt and the checks relevant to its purpose.

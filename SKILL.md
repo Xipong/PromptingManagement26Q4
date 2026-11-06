@@ -1,7 +1,7 @@
 ---
 name: prompting-management-26q4
-description: "Use when creating or repairing model-facing prompts."
-version: 0.1.0
+description: "Use when creating, auditing or improving model prompts."
+version: 0.2.0
 author: Xipong, Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
@@ -12,41 +12,37 @@ metadata:
 
 # Prompting Management — 2026 Q4
 
-Create or repair instructions that help a capable model achieve the user's goal. Optimize accepted outcomes and the complete cost of getting them, not prompt length or obedience to a prescribed itinerary.
+Help a capable model understand the task and produce a good result. Choose wording, context, examples and workflow around that goal.
 
 ## When to Use
 
-Use for task prompts, reusable agent instructions, application system/developer messages, schema descriptions and capability cards. Do not load this merely because a task uses an LLM, measures token usage or touches a repository containing AGENTS.md.
+Use when creating, reviewing or improving task prompts, reusable skills, AGENTS.md, application instructions, schema descriptions or capability cards.
 
-## Working model
+## Approach
 
-- Give the model the goal, relevant evidence, real constraints and a recognizable good result. Leave interchangeable implementation choices open; prescribe order only for actual dependencies or fragile operations.
-- Add knowledge the model cannot reliably infer: supported operations, data meanings and units, authority boundaries, consumer behavior and working tools. Preserve useful expressive capacity when simplifying.
-- Separate source facts, mandatory contracts and advisory preferences. A restriction on claims about existing facts does not forbid creative synthesis within supported capabilities.
-- Match instructions to the execution mode. A single-shot generator cannot perform an agent's tool-driven investigation; a self-report is not evidence that checks ran.
-- Keep each rule at one owner. Put the main decision and critical invariants in the entry document; load task-specific depth only when relevant. A collection of links without enough guidance to choose a path is not a useful skill.
-- Fix the failure mechanism. Repeated mistakes can point to missing data, unclear interfaces, unavailable capabilities or weak diagnostics rather than insufficient reminders. Enforce machine-checkable invariants in code while still explaining the contract to the model.
-- Treat examples as demonstrations, not hidden requirements. Prefer examples that resolve a real ambiguity; do not accidentally impose one design, style or level of complexity on every answer.
+- State the goal, the context that matters and what a good result looks like. Explain important trade-offs and let the model choose how to solve the task.
+- Supply knowledge the model needs: available operations, data meanings and units, relevant evidence, tool behavior and dependencies.
+- Separate factual inputs, real requirements and preferences. Make the available design space clear, including where the model can invent, explore or propose alternatives.
+- Match the prompt to its execution environment. Give an agent usable tools and feedback; give a single-shot generator the context needed to produce its answer.
+- Use examples when they communicate intent, quality, format or a difficult distinction. Choose examples that represent the range of acceptable results.
+- Keep reusable guidance at a clear owner and route to detailed material when it helps the current task. Review the combined instructions as well as individual sentences: several reasonable rules can jointly steer the model toward a poor result.
+- Improve the mechanism behind recurring failures. Clearer interfaces, better input data, tools and automatic checks can solve problems that wording alone cannot.
 
 ## Choose the work
 
-| Need | Read |
+| Task | Reference |
 |---|---|
-| Build a new prompt or repair an unsuccessful one | [Creation and repair](references/create-and-repair.md) |
-| Decide whether an instruction change helps | [Evaluation and metrics](references/evaluation.md) |
-| Understand the evidence, dates and limits behind this approach | [Sources and rationale](references/sources.md) |
-| Start a task brief or a single-shot request | [Optional prompt shapes](templates/prompt-shapes.md) |
+| Create a prompt, audit its effects or improve a weak result | [Creation and repair](references/create-and-repair.md) |
+| Compare outcomes and choose a revision | [Evaluation and metrics](references/evaluation.md) |
+| Read the reasoning and sources behind this approach | [Sources and rationale](references/sources.md) |
+| Start from a prompt outline | [Prompt shapes](templates/prompt-shapes.md) |
 
-For a small edit, inspect the affected instruction and its real consumer. Broaden to the effective message hierarchy when a conflict, missing context or cumulative inhibition is plausible. Do not turn every wording change into a full audit, model experiment or multi-agent workflow.
+Choose the scope of the change from the problem. A sentence edit may resolve an ambiguity; accumulated conflicts or a poor task framing may call for a full rewrite. Keep useful detail and expressive capacity while removing obsolete or irrelevant guidance.
 
-## Preserve and verify
+Respect the user's requirements, permissions and resource limits. Distinguish those from inherited habits or self-imposed restrictions. When the task calls for changing a contract, update its instructions and consumers together.
 
-Preserve actual user permissions, accepted output contracts, units, supported choices and important applicability conditions. Do not weaken a check to make a response pass, invent missing source facts or silently remove a valid option during compression.
+Use the tools, examples and evaluations that help resolve the task. Match verification to the behavior affected and work within the available budget. Return the improved prompt or skill, explain the important choices, and give the evidence needed to judge the result.
 
-Use the cheapest evidence that answers the remaining question. Structural and semantic inspection can establish a prose edit's intended meaning; only appropriate task execution can establish a behavioral improvement. Fresh inference, paid services, tool launches and publication remain within the user's granted scope and budget.
+## Sources
 
-Deliver the requested prompt or edit, the material decision behind it and the evidence obtained. Identify unresolved behavior without claiming an unrun experiment passed. Skip a change when the current instruction is already clear and consumer-correct.
-
-## Provenance
-
-This is an original synthesis informed by the dated sources in [Sources and rationale](references/sources.md), including InfiniCrafterLocal's contributor guidance, OpenAI, Poteto/pstack and agent-skill research. It is not a copy of pstack, a vendor policy or an ICL runtime contract. The Q4 label identifies the evidence snapshot, not a permanent rule that future models behave identically.
+The approach draws on OpenAI guidance, Poteto/pstack, agent-skill research and their application in InfiniCrafterLocal. See [Sources and rationale](references/sources.md).

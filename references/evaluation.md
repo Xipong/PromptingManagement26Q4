@@ -1,49 +1,49 @@
 # Evaluation and metrics
 
-Use this reference when a decision depends on whether a prompt or skill changes outcomes. It does not authorize model calls or require an experiment for each prose edit.
+Choose measurements that help decide whether an instruction improves the task. A small wording edit may need inspection; a change to behavior is best judged on representative work.
 
-## Define success before comparing variants
+## Define the outcome
 
-Choose a primary outcome that represents the user's goal. Keep mechanical validity, semantic correctness and human/product quality distinct. A build, schema-valid answer or fluent explanation can pass while the requested behavior fails.
+Start with the result the user wants. Separate output validity, semantic correctness and product quality where they answer different questions. For example, a generated program can compile while implementing the wrong behavior.
 
-Write down the treatment, the tasks it should help and the result that would change your decision. Preserve real permissions and safety/contract boundaries across all variants, including any no-skill baseline. An evaluation is not permission to remove restrictions that protect the user's resources or data.
+Name the revision being tested, the tasks it should help and the trade-off that matters. Keep the user's requirements and resource limits in effect throughout the comparison.
 
-## A small useful measurement panel
+## Choose useful measures
 
-| Measure | Definition | Interpretation boundary |
+Select a primary outcome and supporting measures for the decision.
+
+| Measure | Definition | Record alongside it |
 |---|---|---|
-| Accepted completion | Accepted tasks divided by all launched tasks under the declared acceptance rule. | Retain rejection reasons, infrastructure errors and unknowns; do not silently select successful outputs. |
-| Human correction burden | Corrective interventions and, when actually recorded, human minutes. | Separate necessary preference clarification from correction of agent mistakes. Do not infer minutes from message count. |
-| False completion | Claimed completions that fail acceptance divided by all claimed completions. | Also report the number accepted/launched so cautious refusal cannot look like high overall quality. |
-| Cost per accepted result | Total observed cost of all attempts divided by accepted results. | Include failures, repair and retries; show tokens, money and human time separately. With no accepted result the ratio is undefined, not zero. |
-| Time to accepted result | End-to-end time from task start to verified completion. | Show completion-by-deadline and timeout/unresolved counts alongside completed-run quantiles; do not hide long failures. |
-| Semantic/product quality | Separate rubric scores or blinded pairwise judgments for the actual artifact. | Judge useful behavior, factual accuracy and fitness for purpose, not prose length or feature count. Calibrate a model judge against concrete controls and human disagreements. |
-| First-pass validity and repair | Initial valid answers divided by authentic initial answers; repair incidence and repair success separately. | Distinguish transport failures with no answer, syntax/shape failures and semantic failures. Respect any bounded/frozen repair contract the target actually has. |
+| Accepted completion | Accepted tasks divided by all launched tasks under the declared acceptance rule. | Counts and reasons for rejected, failed and unresolved tasks. |
+| Human correction burden | Corrective interventions and recorded human time. | Preference clarifications separately from corrections of mistakes. |
+| False completion | Claimed completions that fail acceptance divided by all claimed completions. | Accepted/launched counts, so frequent refusal remains visible. |
+| Cost per accepted result | Cost of all attempts divided by accepted results. | Failures, repairs and retries; tokens, money and human time in their own units. With no accepted result, report total spend and zero accepted results. |
+| Time to accepted result | Time from task start to verified completion. | Completion-by-deadline, timeouts and unresolved cases beside completed-run quantiles. |
+| Semantic or product quality | Rubric scores or blinded pairwise judgments of the artifact. | Criteria such as useful behavior, factual accuracy, clarity and design quality. |
+| First-pass validity and repair | Initial valid answers divided by authentic initial answers; repair incidence and success separately. | Transport failures, shape failures, semantic failures and any project-specific repair boundaries. |
 
-Treat loaded-context size, irrelevant skill loads, redundant tool actions and cache reuse as diagnostics, not primary success metrics. Measure the actual input envelope with a named tokenizer or observed provider usage when claiming tokens. Character counts are not token counts; a shorter static prompt is not an observed reduction in total task cost.
+Use context size, skill selection, repeated tool actions and cache reuse to diagnose the process. Measure tokens from provider usage or a named tokenizer on the actual input. Measure time on the complete path the user waits for, with stage timing available to locate bottlenecks.
 
-For creative generation, inspect diversity and intended freedom alongside usefulness. More effects or novelty is not automatically better. A rigid novelty score can penalize a deliberately simple, appropriate design. For a runtime pipeline, compare claimed behavior with what its consumers can execute; textual self-checks are not execution evidence.
+For creative tasks, include meaningful variety and the quality of the chosen design. Judge complexity by how it serves the result. For executable outputs, compare the description with the behavior of the actual consumer.
 
-## Match the experiment to the decision
+## Compare variants
 
-For a substantial behavior change, compare the current and proposed instructions on the same representative tasks. An optional no-skill arm helps determine whether the instruction contributes anything, but is not mandatory for every repair.
+Run current and proposed instructions on matched tasks, holding model, settings, tools, inputs and starting conditions fixed except for the treatment. A no-skill or simpler-prompt arm can help establish what the added instructions contribute.
 
-Keep model/version, effort, tools, task inputs and initial environment equal except for the declared treatment. Include the original failure, adjacent cases, normal work and a task where the skill should not trigger. Hold some cases out of the editing loop when repeated tuning risks overfitting.
+Cover the original failure, normal work and nearby cases. For a reusable skill, include a case outside its trigger. Reserve some cases from repeated editing when tuning risks overfitting.
 
-Use ordinary-looking task requests. Do not tell candidates which variant is preferred or leak the evaluator's private rubric, gold answer or other candidates' outputs. Label results neutrally for judging and vary presentation order when order effects are plausible. Verify tool/skill use from recorded actions, not self-reported compliance.
+Give candidates ordinary task requests. Keep gold answers, preferred variant labels and evaluator-only notes with the evaluator. Present outputs under neutral labels and vary their order when judging may be order-sensitive. Check recorded actions when tool or skill use matters to the result.
 
-Repeat cases when stochastic variation matters, within the authorized budget. Match or interleave runs where provider load, warmup or cache state can change. A small pilot identifies issues; it does not establish a universal win. Report paired differences and sample counts; use task-level uncertainty estimates when there is enough data, treating repeats of one task as related rather than independent tasks. If the observed difference is within ordinary variability, call it inconclusive.
+Repeat or interleave runs when sampling variation, provider load, warmup or cache state affects the comparison. Report case counts, paired differences and variability. Treat repeated runs of the same task as related observations. If the observed gap is within ordinary variation, gather more evidence when the decision warrants it or report the comparison as inconclusive.
 
-Do not turn an operational checklist from another benchmark into an arbitrary minimum sample size. A required publication, acceptance campaign or project gate can impose its own justified protocol.
+Choose the sample size and evaluation depth for the decision and available budget. Follow any applicable project acceptance requirements.
 
-## Record enough to make the result interpretable
+## Keep interpretable evidence
 
-Use the existing evidence owner. Keep task/variant identity, source and effective settings, input/output provenance, terminal outcome, acceptance reason, actual attempts, timing and authoritative usage when available. Keep missing counters unknown. Preserve original failures after recovery and source-bound saved outputs; do not count replay as new inference.
+Record task and variant identity, the effective prompt/settings, output, outcome reason, attempts, time and available usage. Preserve initial failures after recovery and label saved-output replay as replay. Missing counters remain unknown.
 
-For latency, verify that the intended work happened inside the timed region and that outputs were correct. Distinguish per-stage and end-to-end results. For API-equivalent pricing on a subscription route, label the calculation as a comparison, not a bill or evidence about API latency.
+Verify that the timed work ran and produced the intended output. For a subscription route priced at API rates, label the amount as an API-equivalent calculation. A combined change to the model, input data and prompt measures that combined treatment.
 
 ## Decide and report
 
-Prefer a variant that improves the selected outcome without violating the real constraints, or preserves quality with a useful reduction in complete cost. There is no universal percentage threshold: agree the trade-off appropriate to the task. A smaller prompt that loses capabilities is not equivalent optimization.
-
-Report the objective, actual comparison, denominator, main result and limitations. Separate observed improvement from plausible explanation; a joint change to prompt, data and model does not isolate a prompt effect. Do not launch extra calls just to repair a local reporting error.
+Choose the revision that delivers the best task outcome within the relevant cost and quality constraints. Explain the trade-off with the observed results. Report the comparison, sample size and main finding; include unresolved issues when they affect the decision.
