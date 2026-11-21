@@ -1,6 +1,6 @@
 ---
 name: prompting-management-26q4
-description: "Write or revise task prompts, system instructions and agent skills when the user asks for help with prompting."
+description: "Write, audit or revise task prompts, system instructions and agent skills when the user asks for help with prompting."
 version: 0.3.0
 author: Xipong, Hermes Agent
 license: MIT
@@ -18,9 +18,11 @@ Distinguish requirements from preferences. Give the reason for a constraint when
 
 For example, “stay faithful to the two source items” is ambiguous in a crafting prompt. Try “Keep the listed properties of both items accurate. Invent a new effect that draws on both identities using the available game mechanics.” This preserves factual accuracy and gives the model room to design.
 
-## Revising a prompt
+## Auditing a prompt
 
-Read the prompt alongside the request and, when available, an actual answer. Where could a model follow the wording and still miss the point? An example may accidentally prescribe a layout, or two individually reasonable rules may conflict. Edit the instruction that led to that reading. If a missing fact explains the failure, supply it. If you have a representative input, try the revision on it and judge the resulting answer by the user’s goal.
+Read the instructions as the receiving model sees them, including any examples, injected context or referenced guidance it actually receives. What would count as a good result for the user? Where could the model satisfy the instructions yet miss that goal? Look at how the parts work together. An example can quietly narrow the options that the prose leaves open.
+
+Ground each finding in a specific passage or missing fact. Explain the decision it steers and suggest a change if one would help. Use an existing answer when available, distinguishing what happened from what the wording might encourage. An audit can conclude that the prompt already serves its purpose. When the user also asks for fixes, apply the supported changes.
 
 ## When moving an existing prompt to a newer model
 
