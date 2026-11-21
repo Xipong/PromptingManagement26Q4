@@ -22,6 +22,8 @@ For example, “stay faithful to the two source items” is ambiguous in a craft
 
 Read the instructions as the receiving model sees them, including any examples, injected context or referenced guidance it actually receives. What would count as a good result for the user? Where could the model satisfy the instructions yet miss that goal? Look at how the parts work together. An example can quietly narrow the options that the prose leaves open.
 
+When the model chooses from a set of operations, check what their descriptions let it infer. A schema may accept `duration: 30` while leaving the unit unclear. If a parameter only applies to certain operations, put that condition beside the field so the model can use it when choosing.
+
 Ground each finding in a specific passage or missing fact. Explain the decision it steers and suggest a change if one would help. Use an existing answer when available, distinguishing what happened from what the wording might encourage. An audit can conclude that the prompt already serves its purpose. When the user also asks for fixes, apply the supported changes.
 
 ## When moving an existing prompt to a newer model
