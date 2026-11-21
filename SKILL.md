@@ -1,48 +1,34 @@
 ---
 name: prompting-management-26q4
-description: "Use when creating, auditing or improving model prompts."
-version: 0.2.0
+description: "Write, audit or revise task prompts, system instructions and agent skills when the user asks for help with prompting."
+version: 0.3.0
 author: Xipong, Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
 metadata:
   hermes:
-    tags: [prompting, skills, context-engineering, evaluation]
+    tags: [prompting, skills, prompt-design]
 ---
 
 # Prompting Management — 2026 Q4
 
-Help a capable model understand the task and produce a good result. Choose wording, context, examples and workflow around that goal.
+Write for the model that will receive the prompt. Say what the user wants to accomplish and give the model the facts it would otherwise have to guess. In a one-shot prompt, include the relevant material. For an agent that can inspect it, a precise reference may suffice.
 
-## When to Use
+Distinguish requirements from preferences. Give the reason for a constraint when it helps the model make a judgment. Specify a method when the task depends on it. Leave other decisions open.
 
-Use when creating, reviewing or improving task prompts, reusable skills, AGENTS.md, application instructions, schema descriptions or capability cards.
+For example, “stay faithful to the two source items” is ambiguous in a crafting prompt. Try “Keep the listed properties of both items accurate. Invent a new effect that draws on both identities using the available game mechanics.” This preserves factual accuracy and gives the model room to design.
 
-## Approach
+## Auditing a prompt
 
-- State the goal, the context that matters and what a good result looks like. Explain important trade-offs and let the model choose how to solve the task.
-- Supply knowledge the model needs: available operations, data meanings and units, relevant evidence, tool behavior and dependencies.
-- Separate factual inputs, real requirements and preferences. Make the available design space clear, including where the model can invent, explore or propose alternatives.
-- Match the prompt to its execution environment. Give an agent usable tools and feedback; give a single-shot generator the context needed to produce its answer.
-- Use examples when they communicate intent, quality, format or a difficult distinction. Choose examples that represent the range of acceptable results.
-- Keep reusable guidance at a clear owner and route to detailed material when it helps the current task. Review the combined instructions as well as individual sentences: several reasonable rules can jointly steer the model toward a poor result.
-- Improve the mechanism behind recurring failures. Clearer interfaces, better input data, tools and automatic checks can solve problems that wording alone cannot.
+Read the instructions as the receiving model sees them, including any examples, injected context or referenced guidance it actually receives. What would count as a good result for the user? Where could the model satisfy the instructions yet miss that goal? Look at how the parts work together. An example can quietly narrow the options that the prose leaves open.
 
-## Choose the work
+When the model chooses from a set of operations, check what their descriptions let it infer. A schema may accept `duration: 30` while leaving the unit unclear. If a parameter only applies to certain operations, put that condition beside the field so the model can use it when choosing.
 
-| Task | Reference |
-|---|---|
-| Create a prompt, audit its effects or improve a weak result | [Creation and repair](references/create-and-repair.md) |
-| Compare outcomes and choose a revision | [Evaluation and metrics](references/evaluation.md) |
-| Read the reasoning and sources behind this approach | [Sources and rationale](references/sources.md) |
-| Start from a prompt outline | [Prompt shapes](templates/prompt-shapes.md) |
+Ground each finding in a specific passage or missing fact. Explain the decision it steers and suggest a change if one would help. Use an existing answer when available, distinguishing what happened from what the wording might encourage. An audit can conclude that the prompt already serves its purpose. When the user also asks for fixes, apply the supported changes.
 
-Choose the scope of the change from the problem. A sentence edit may resolve an ambiguity; accumulated conflicts or a poor task framing may call for a full rewrite. Keep useful detail and expressive capacity while removing obsolete or irrelevant guidance.
+## When moving an existing prompt to a newer model
 
-Respect the user's requirements, permissions and resource limits. Distinguish those from inherited habits or self-imposed restrictions. When the task calls for changing a contract, update its instructions and consumers together.
+Use these observations when they explain something you see in the output.
 
-Use the tools, examples and evaluations that help resolve the task. Match verification to the behavior affected and work within the available budget. Return the improved prompt or skill, explain the important choices, and give the evidence needed to judge the result.
-
-## Sources
-
-The approach draws on OpenAI guidance, Poteto/pstack, agent-skill research and their application in InfiniCrafterLocal. See [Sources and rationale](references/sources.md).
+- **GPT-6.2 Sol and Astra.** If a requested draft reads like internal notes, name its reader and the context that reader needs. For instance, “Write the release note for players who have never seen the bug report.” Astra already tends toward brevity. Revisit inherited “be concise” instructions if answers omit useful detail. [OpenAI prompting guidance](https://developers.openai.com/api/docs/guides/latest-model#prompting-best-practices)
+- **Claude Fable 5.2.** Read old absolutes literally. If “never change the terminology” was meant to protect product names, say “Keep product names verbatim.” Role descriptions can also widen the task. Calling Claude the owner of a codebase can encourage unrelated cleanup even alongside a narrow edit request. Use a role only when its implied responsibility fits. [Anthropic prompting guidance](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2)
