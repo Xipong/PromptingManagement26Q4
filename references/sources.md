@@ -1,6 +1,6 @@
 # Sources and rationale
 
-Sources reviewed on **6–7 November 2026**.
+Initial review on **6–7 November 2026**. Model guidance reviewed on **21 November 2026**.
 
 ## Practical guidance
 
@@ -8,6 +8,8 @@ Sources reviewed on **6–7 November 2026**.
 |---|---|
 | InfiniCrafterLocal AGENTS.md | Project synthesis of the prompting guides below: convey the goal, context and good-result criteria across all model-facing instructions. This was the starting point for the standalone skill.[1] |
 | OpenAI, *Rethinking skills and prompts for GPT-6 Astra*, 11 September 2026 | Focus skill triggers, use progressive disclosure and revisit accumulated instructions as models improve.[7] |
+| OpenAI, *Using GPT-6.2* | Calibrate completion, style and coding instructions for Astra and Sol. Check request layout and retention of reasoning when migrating a Responses integration.[23] |
+| Anthropic, *Prompting Claude Fable 5.2* | Tune effort and target observed early stops, approval loops, code ownership, silence and delegation. Use reported measurements to design local comparisons.[24] |
 | Poteto, 16 October 2026 | Improve architecture, invariants and automated feedback so the environment helps agents do the right thing.[9] |
 | Poteto, 24 October 2026 | Simplify skills as models become more capable.[10] |
 | Poteto, 5 November 2026 | Make system behavior legible enough to compare with human intent; combine specification checks with running the actual code.[19] |
@@ -35,3 +37,5 @@ Together, these results motivate the guide's practical focus: add useful knowled
 [15] https://raw.githubusercontent.com/cursor/plugins/main/pstack/skills/benchmark-checklist/SKILL.md — pstack: benchmark-checklist
 [19] https://x.com/poteto/status/2118416074601545968 — Poteto, 5 November: specification, intent and verification
 [22] https://raw.githubusercontent.com/cursor/plugins/main/pstack/docs/guide/09-make-it-yours.md — pstack: Make it yours
+[23] https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6.2-astra — OpenAI: Using GPT-6.2
+[24] https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2 — Anthropic: Prompting Claude Fable 5.2

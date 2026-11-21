@@ -10,11 +10,15 @@ Context: <primary input, observed behavior, relevant sources or entry point>.
 Requirements: <what matters, including behavior to preserve and resource limits>.
 Done means: <a useful result and how to recognize it>.
 Deliver: <the artifact and evidence needed to review it>.
-Choose an effective approach. Use the available tools and feedback to work
-through the task; ask about user-owned decisions that materially change it.
+Proceed with <authorized routine actions>. If a tool fails, diagnose it
+and use an available recovery path. State material reversible assumptions.
+Ask when <decision or approval> is required, and keep working on independent steps.
+Before wrapping up, check the result against the completion criteria.
 ```
 
 For a clear small task, a direct sentence may carry everything needed.
+
+For long interactive work, ask for brief updates when a finding changes the plan or a significant stage finishes. Make the final report usable by someone who sees only the result, its verification and any open issue.
 
 ## Single-shot generator
 

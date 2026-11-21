@@ -14,6 +14,8 @@ Build the prompt from the information that matters:
 
 Recover facts from the available material. Ask about a missing preference when it materially changes the result. For a noisy or ambiguous request, briefly state your understanding so a misunderstanding is easy to correct; continue clear work using the context already available.
 
+For an action request, specify the deliverable and how the agent can verify it. Let it carry out authorized, reversible steps and state material assumptions. Name any decision or approval that genuinely blocks the dependent work. If the model can ask asynchronously, let it continue on independent work while it waits for an answer.
+
 For exploratory work, describe the question and useful evidence the model should seek. Let it refine an approach as it learns. Use the [prompt shapes](../templates/prompt-shapes.md) when a starting outline helps.
 
 ## Give the model useful context
@@ -50,6 +52,8 @@ Follow the instruction and data flow far enough to understand the cause. Compare
 | Instructions conflict | Resolve their authority and remove the conflicting requirement. |
 | The model chooses a technically valid but weak answer | Clarify the purpose, quality criteria and available design space. |
 | The model performs irrelevant steps | Remove or narrow the obligation that triggers them. |
+| The agent reports a plan, an ordinary failure or unfinished work and stops | Check whether an authorized path remains. Specify completion evidence, routine actions and when to retry or switch methods. Test effort separately if supported. |
+| The agent repeatedly asks for permission or delegates a small task | Trace the behavior through tool descriptions, skills, repository instructions and persistent notes. Narrow the instruction where it originates. |
 | A needed operation is unavailable | Find another effective approach or extend the capability within the task's scope. |
 | A failure occurs despite apparently clear instructions | Inspect the example, model settings, tools and surrounding context before choosing a remedy. |
 | The same error keeps recurring | Consider a better interface, data structure, diagnostic or automated check alongside prompt changes. |
@@ -63,6 +67,8 @@ Fix a local ambiguity locally. Rewrite the structure when accumulated rules obsc
 Identify what must remain stable and what the user wants changed. For behavior-preserving edits, retain the supported operations, units and meaningful conditions. For a contract redesign, change the prompt, validation and consumers together so the new design is coherent.
 
 Give each durable rule a clear owner. Shared facts belong where their users can discover them; branch-specific detail belongs with that branch. Keep useful examples and explanations even when some invariants are enforced by code.
+
+For a migration, reproduce the behavior on the target model before carrying over rules tuned for an older one. Identify whether the change belongs in the prompt, model settings, tool description or how the application sends the conversation. See [Model guidance](model-guidance.md) for the current provider-specific cases.
 
 Write instructions and documentation directly. Explain an actual limitation where it affects a decision; use the rest of the space to help the reader do the work.
 

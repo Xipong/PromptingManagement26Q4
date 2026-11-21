@@ -32,6 +32,8 @@ Run current and proposed instructions on matched tasks, holding model, settings,
 
 Cover the original failure, normal work and nearby cases. For a reusable skill, include a case outside its trigger. Reserve some cases from repeated editing when tuning risks overfitting.
 
+When migrating, compare the old and revised prompt on the target model at the same effort first. Sweep effort separately with the prompt held fixed. For a completion instruction, try a recoverable tool error, a reversible ambiguity and a genuine approval boundary. Check both premature stops and actions that exceed the authorized scope.
+
 Give candidates ordinary task requests. Keep gold answers, preferred variant labels and evaluator-only notes with the evaluator. Present outputs under neutral labels and vary their order when judging may be order-sensitive. Check recorded actions when tool or skill use matters to the result.
 
 Repeat or interleave runs when sampling variation, provider load, warmup or cache state affects the comparison. Report case counts, paired differences and variability. Treat repeated runs of the same task as related observations. If the observed gap is within ordinary variation, gather more evidence when the decision warrants it or report the comparison as inconclusive.
@@ -41,6 +43,8 @@ Choose the sample size and evaluation depth for the decision and available budge
 ## Keep interpretable evidence
 
 Record task and variant identity, the effective prompt/settings, output, outcome reason, attempts, time and available usage. Preserve initial failures after recovery and label saved-output replay as replay. Missing counters remain unknown.
+
+For tool-using agents, record the model and effort used by the parent and any workers. Count their usage and the parent's integration and review toward the cost of the accepted result. For a history or cache change, compare the serialized requests across turns, then inspect available cache and reasoning counters alongside task outcomes.
 
 Verify that the timed work ran and produced the intended output. For a subscription route priced at API rates, label the amount as an API-equivalent calculation. A combined change to the model, input data and prompt measures that combined treatment.
 
