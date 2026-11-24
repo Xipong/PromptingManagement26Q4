@@ -24,7 +24,7 @@ Read the instructions as the receiving model sees them, including any examples, 
 
 When the model chooses from a set of operations, check what their descriptions let it infer. A schema may accept `duration: 30` while leaving the unit unclear. If a parameter only applies to certain operations, put that condition beside the field so the model can use it when choosing.
 
-Ground each finding in a specific passage or missing fact. Explain the decision it steers and suggest a change if one would help. Use an existing answer when available, distinguishing what happened from what the wording might encourage. An audit can conclude that the prompt already serves its purpose. When the user also asks for fixes, apply the supported changes.
+Ground each finding in a specific passage or missing fact. Determine how it could affect the model’s answer or actions. Suggest a change if it would help the user achieve their goal. Use an existing answer when available, distinguishing what happened from what the wording might encourage. An audit can conclude that the prompt already serves its purpose. When the user also asks for fixes, apply the supported changes.
 
 ## When moving an existing prompt to a newer model
 
